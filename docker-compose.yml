@@ -1,0 +1,40 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=nodedb
+    networks:
+      - nodenet
+
+  db:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nodedb
+    networks:
+      - nodenet
+
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - '8080:80'
+    networks:
+      - nodenet
+
+networks:
+  nodenet:
+    driver: bridge
