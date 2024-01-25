@@ -46,6 +46,6 @@ app.get('/', async (_, res) => {
   );
 });
 
-app.listen(3000, () => {
-  console.log('Running server');
+app.listen(4000, () => {
+  console.log('Running server on port 4000');
 });
