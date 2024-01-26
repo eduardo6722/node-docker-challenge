@@ -3,14 +3,15 @@ version: '3'
 services:
   app:
     build:
-      context: .
+      context: ./app
     container_name: app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
     command: node index.js
     networks:
       - nodenet
     volumes:
-      - ./:/api
+      - ./app:/app
+      - /app/node_modules
     tty: true
     ports:
       - '4000:4000'
@@ -24,9 +25,9 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
-      - MYSQL_DATABASE=nodedb
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_ROOT_USER=root
+      MYSQL_DATABASE: nodedb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_USER: root
     networks:
       - nodenet
 
